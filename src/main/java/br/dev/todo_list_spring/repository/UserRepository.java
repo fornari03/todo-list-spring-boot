@@ -8,8 +8,4 @@ import br.dev.todo_list_spring.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
-
-    List<User> findAllByOrderByDateLimitAsc();
-
-    List<User> findByDone(boolean done);
 }
