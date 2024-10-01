@@ -1,6 +1,6 @@
 package br.dev.todo_list_spring.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +23,7 @@ public class Task {
 
     private String description;
 
-    private Date dateLimit;
+    private LocalDateTime dateLimit;
     
     private boolean done;
 
