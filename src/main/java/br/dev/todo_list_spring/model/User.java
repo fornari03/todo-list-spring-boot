@@ -28,6 +28,8 @@ public class User {
 
     private String password;
 
+    private String role;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Task> tasks;
 }
