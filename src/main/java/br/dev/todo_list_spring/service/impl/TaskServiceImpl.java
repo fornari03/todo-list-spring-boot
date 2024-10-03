@@ -3,6 +3,7 @@ package br.dev.todo_list_spring.service.impl;
 import java.util.List;
 import java.util.function.Supplier;
 
+import br.dev.todo_list_spring.dto.TaskDTO;
 import br.dev.todo_list_spring.model.Task;
 import br.dev.todo_list_spring.model.User;
 import br.dev.todo_list_spring.repository.TaskRepository;
@@ -24,8 +25,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Transactional
-    public List<Task> getTasksByUser(String username) {
-        User user = userRepository.findByUsername(username)
+    public List<Task> getTasksByUserId(Long userId) {
+        User user = userRepository.findById(userId)
                                   .orElseThrow((Supplier<RuntimeException>) () -> new RuntimeException("User not found"));
         return taskRepository.findByUserId(user.getId());
     }
