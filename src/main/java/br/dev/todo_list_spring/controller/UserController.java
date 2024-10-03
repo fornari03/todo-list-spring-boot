@@ -1,6 +1,7 @@
 package br.dev.todo_list_spring.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.dev.todo_list_spring.service.UserService;
+import br.dev.todo_list_spring.dto.UserDTO;
 import br.dev.todo_list_spring.model.User;
 
 @RestController
@@ -26,23 +28,27 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
-        return ResponseEntity.ok(userService.findAll());
+    public ResponseEntity<List<UserDTO>> findAll() {
+        List<UserDTO> userDTOs = userService.findAll().stream()
+                                         .map(UserDTO::new)
+                                         .collect(Collectors.toList());
+
+        return ResponseEntity.ok(userDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id));
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(new UserDTO(userService.findById(id)));
     }
     
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody User newUser) {
-        return ResponseEntity.ok(userService.create(newUser));
+    public ResponseEntity<UserDTO> create(@RequestBody User newUser) {
+        return ResponseEntity.ok(new UserDTO(userService.create(newUser)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User newUser) {
-        return ResponseEntity.ok(userService.update(id, newUser));
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody User newUser) {
+        return ResponseEntity.ok(new UserDTO(userService.update(id, newUser)));
     }
 
     @DeleteMapping("/{id}")

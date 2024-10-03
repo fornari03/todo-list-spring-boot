@@ -1,6 +1,7 @@
 package br.dev.todo_list_spring.service.impl;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import br.dev.todo_list_spring.model.User;
 import br.dev.todo_list_spring.repository.UserRepository;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User update(Long id, User newUser) {
+        userRepository.findById(id).orElseThrow((Supplier<RuntimeException>) () -> new RuntimeException("User not found"));
         return userRepository.save(newUser);
     }
 
