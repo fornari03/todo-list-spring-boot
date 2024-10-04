@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import br.dev.todo_list_spring.handler.IllegalDateLimitFormat;
 import br.dev.todo_list_spring.model.Task;
 import br.dev.todo_list_spring.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,8 +29,8 @@ public record TaskDTO(
         try {
             LocalDateTime dateLimit = LocalDateTime.parse(this.dateLimit(), DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy"));
             task.setDateLimit(dateLimit);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Data inválida: " + this.dateLimit(), e);
+        } catch (IllegalDateLimitFormat e) {
+            throw new IllegalDateLimitFormat();
         }
         task.setDone(this.done());
         task.setUser(user);

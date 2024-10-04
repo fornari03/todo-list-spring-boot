@@ -1,8 +1,11 @@
 package br.dev.todo_list_spring.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
+import br.dev.todo_list_spring.handler.UserAlreadyExistsException;
+import br.dev.todo_list_spring.handler.UserNotFoundException;
 import br.dev.todo_list_spring.model.User;
 import br.dev.todo_list_spring.repository.UserRepository;
 import br.dev.todo_list_spring.service.UserService;
@@ -27,7 +30,7 @@ public class UserServiceImpl implements UserService, UserDetailsService  {
 
     @Transactional
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
     }
 
     @Transactional
@@ -37,20 +40,25 @@ public class UserServiceImpl implements UserService, UserDetailsService  {
 
     @Transactional
     public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
     }
 
     @Transactional
     public User create(User newUser) {
+        Optional<User> existingUser = userRepository.findByUsername(newUser.getUsername());
+        if (existingUser.isPresent()) {
+            throw new UserAlreadyExistsException(existingUser.get().getUsername());
+        }
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         String role = newUser.getRole();
-        newUser.setRole(role == null ? "USER" : role);
+        newUser.setRole(role.toUpperCase().strip().equals("ADMIN") ? "ADMIN" : "USER");
+        
         return userRepository.save(newUser);
-    }
+    }    
 
     @Transactional
     public User update(Long id, User newUser) {
-        userRepository.findById(id).orElseThrow((Supplier<RuntimeException>) () -> new RuntimeException("User not found"));
+        userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
         return userRepository.save(newUser);
     }
 
@@ -60,9 +68,9 @@ public class UserServiceImpl implements UserService, UserDetailsService  {
     }
 
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            .orElseThrow(() -> new UserNotFoundException());
 
         return org.springframework.security.core.userdetails.User.builder()
             .username(user.getUsername())
