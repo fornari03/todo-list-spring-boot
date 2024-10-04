@@ -33,7 +33,9 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/", "/swagger-ui/index.html/users/register").permitAll()  // endpoints públicos
+                .requestMatchers("/").permitAll()  // endpoints públicos
+                .requestMatchers("/users/**", "/h2-console/**").hasRole("ADMIN") // endpoints apenas para ADMIN
+                .requestMatchers("/tasks/**").hasAnyRole("USER", "ADMIN") // endpoints apenas para USER
                 .anyRequest().authenticated()  // o restante requer autenticação
             )
             .formLogin(form -> form.defaultSuccessUrl("/swagger-ui/index.html", true))  // redireciona para o swagger após o login
