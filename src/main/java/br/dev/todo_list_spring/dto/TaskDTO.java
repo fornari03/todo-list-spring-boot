@@ -5,13 +5,12 @@ import java.time.LocalDateTime;
 import br.dev.todo_list_spring.model.Task;
 import br.dev.todo_list_spring.model.User;
 
-public record TaskDTO(Long id, String description, LocalDateTime dateLimit, boolean done, Long userId) {
+public record TaskDTO(Long id, String description, LocalDateTime dateLimit, boolean done) {
     public TaskDTO(Task task) {
         this(task.getId(), 
              task.getDescription(), 
              task.getDateLimit(), 
-             task.isDone(), 
-             task.getUser().getId());
+             task.isDone());
     }
 
     public Task toEntity(User user) {
