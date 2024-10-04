@@ -29,7 +29,6 @@ import br.dev.todo_list_spring.service.UserService;
 public class TaskController {
     private final TaskService taskService;
     private final UserService userService;
-    private Long loggedUserId = -1L;
 
     public TaskController(TaskService taskService, UserService userService) {
         this.taskService = taskService;
@@ -38,7 +37,7 @@ public class TaskController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<List<TaskDTO>> findTasksByUserId(Principal principal) {
-        loggedUserId = loggedUserId == -1L ? userService.findByUsername(principal.getName()).getId() : loggedUserId;
+        Long loggedUserId = userService.findByUsername(principal.getName()).getId();
         List<Task> tasks = taskService.findByUserId(loggedUserId);
         List<TaskDTO> taskDTOs = tasks.stream()
                                       .map(TaskDTO::new)
@@ -48,7 +47,7 @@ public class TaskController {
 
     @PostMapping("/{userId}")
     public ResponseEntity<TaskDTO> createTask(Principal principal, @RequestBody TaskDTO taskDTO) {
-        loggedUserId = loggedUserId == -1L ? userService.findByUsername(principal.getName()).getId() : loggedUserId;
+        Long loggedUserId = userService.findByUsername(principal.getName()).getId();
         Task task = taskDTO.toEntity(userService.findById(loggedUserId));
         return ResponseEntity.ok(new TaskDTO(taskService.create(task)));
     }
