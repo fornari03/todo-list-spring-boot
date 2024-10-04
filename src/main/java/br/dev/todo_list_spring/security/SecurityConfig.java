@@ -31,12 +31,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .csrf().disable()
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/", "/swagger-ui/index.html/users/register").permitAll()  // endpoints públicos
                 .anyRequest().authenticated()  // o restante requer autenticação
             )
             .formLogin(form -> form.defaultSuccessUrl("/swagger-ui/index.html", true))  // redireciona para o swagger após o login
             .logout((logout) -> logout.permitAll());  // logout padrão
+
+        http.headers().frameOptions().disable();
 
         return http.build();
     }
