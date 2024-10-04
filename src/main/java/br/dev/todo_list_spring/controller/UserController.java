@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.dev.todo_list_spring.service.UserService;
 import br.dev.todo_list_spring.dto.UserDTO;
+import br.dev.todo_list_spring.dto.UserRegisterDTO;
 import br.dev.todo_list_spring.model.User;
 
 @RestController
@@ -42,12 +43,12 @@ public class UserController {
     }
     
     @PostMapping
-    public ResponseEntity<UserDTO> create(@RequestBody UserDTO newUserDTO) {
+    public ResponseEntity<UserDTO> create(@RequestBody UserRegisterDTO newUserDTO) {
         return ResponseEntity.ok(new UserDTO(userService.create(newUserDTO.toEntity())));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO newUserDTO) {
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserRegisterDTO newUserDTO) {
         return ResponseEntity.ok(new UserDTO(userService.update(id, newUserDTO.toEntity())));
     }
 
