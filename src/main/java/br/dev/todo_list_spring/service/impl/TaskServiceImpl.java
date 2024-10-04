@@ -1,5 +1,7 @@
 package br.dev.todo_list_spring.service.impl;
 
+import java.lang.StackWalker.Option;
+import java.security.Principal;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -22,13 +24,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
-    }
-
-    @Transactional
-    public List<Task> getTasksByUserId(Long userId) {
-        User user = userRepository.findById(userId)
-                                  .orElseThrow((Supplier<RuntimeException>) () -> new RuntimeException("User not found"));
-        return taskRepository.findByUserId(user.getId());
     }
 
     @Transactional

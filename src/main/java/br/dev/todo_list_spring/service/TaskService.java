@@ -6,6 +6,4 @@ import br.dev.todo_list_spring.model.Task;
 
 public interface TaskService extends CrudService<Long, Task> {
     List<Task> findByUserId(Long userId);
-
-    List<Task> getTasksByUserId(Long userId);
 }
