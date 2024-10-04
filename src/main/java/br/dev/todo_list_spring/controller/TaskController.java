@@ -19,10 +19,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.dev.todo_list_spring.dto.TaskDTO;
+import br.dev.todo_list_spring.dto.UserDTO;
 import br.dev.todo_list_spring.model.Task;
 import br.dev.todo_list_spring.model.User;
 import br.dev.todo_list_spring.service.TaskService;
 import br.dev.todo_list_spring.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/tasks")
@@ -36,6 +40,11 @@ public class TaskController {
     }
 
     @GetMapping("/{userId}")
+    @Operation(summary = "Find all tasks",
+               description = "Find all tasks for a given user.",
+               responses = {
+                   @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Tasks found", content = @Content(schema = @Schema(implementation = TaskDTO.class)))
+               })
     public ResponseEntity<List<TaskDTO>> findTasksByUserId(Principal principal) {
         Long loggedUserId = userService.findByUsername(principal.getName()).getId();
         List<Task> tasks = taskService.findByUserId(loggedUserId);
@@ -46,6 +55,12 @@ public class TaskController {
     }
 
     @PostMapping("/{userId}")
+    @Operation(summary = "Create a new task",
+               description = "Create a new task for the logged user.",
+               requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = TaskDTO.class))),
+               responses = {
+                   @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Task created", content = @Content(schema = @Schema(implementation = TaskDTO.class)))
+               })
     public ResponseEntity<TaskDTO> createTask(Principal principal, @RequestBody TaskDTO taskDTO) {
         Long loggedUserId = userService.findByUsername(principal.getName()).getId();
         Task task = taskDTO.toEntity(userService.findById(loggedUserId));
