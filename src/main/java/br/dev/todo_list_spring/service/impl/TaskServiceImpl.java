@@ -39,8 +39,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Transactional
-    public List<Task> findByUserId(Long userId) {
-        return taskRepository.findByUserId(userId);
+    public List<Task> findByUserIdOrderByDateLimitAsc(Long userId) {
+        return taskRepository.findByUserIdOrderByDateLimitAsc(userId);
+    }
+
+    @Transactional
+    public List<Task> findByUserIdAndDoneOrderByDateLimitAsc(Long userId, Boolean done) {
+        return taskRepository.findByUserIdAndDoneOrderByDateLimitAsc(userId, done);
     }
     
     @Transactional

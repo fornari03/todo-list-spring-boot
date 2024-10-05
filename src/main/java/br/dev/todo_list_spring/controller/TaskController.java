@@ -42,13 +42,13 @@ public class TaskController {
 
     @GetMapping("/{userId}")
     @Operation(summary = "Find all tasks",
-               description = "Find all tasks for the logged user.",
+               description = "Find all tasks for the logged user ordered by DateLimit.",
                responses = {
                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Tasks found", content = @Content(schema = @Schema(implementation = TaskDTO.class)))
                })
     public ResponseEntity<List<TaskDTO>> findTasksByUserId(Principal principal) {
         Long loggedUserId = userService.findByUsername(principal.getName()).getId();
-        List<Task> tasks = taskService.findByUserId(loggedUserId);
+        List<Task> tasks = taskService.findByUserIdOrderByDateLimitAsc(loggedUserId);
         List<TaskDTO> taskDTOs = tasks.stream()
                                       .map(TaskDTO::new)
                                       .collect(Collectors.toList());
@@ -88,5 +88,20 @@ public class TaskController {
         Long loggedUserId = userService.findByUsername(principal.getName()).getId();
         taskService.deleteByIdAndUserId(taskId, loggedUserId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{userId}/{done}")
+    @Operation(summary = "Find all done or undone tasks",
+               description = "Find all done or undone tasks for the logged user ordered by DateLimit.",
+               responses = {
+                   @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Tasks found", content = @Content(schema = @Schema(implementation = TaskDTO.class)))
+               })
+    public ResponseEntity<List<TaskDTO>> findDoneTasksByUserId(Principal principal, @PathVariable Boolean done) {
+        Long loggedUserId = userService.findByUsername(principal.getName()).getId();
+        List<Task> tasks = taskService.findByUserIdAndDoneOrderByDateLimitAsc(loggedUserId, done);
+        List<TaskDTO> taskDTOs = tasks.stream()
+                                      .map(TaskDTO::new)
+                                      .collect(Collectors.toList());
+        return ResponseEntity.ok(taskDTOs);
     }
 }
