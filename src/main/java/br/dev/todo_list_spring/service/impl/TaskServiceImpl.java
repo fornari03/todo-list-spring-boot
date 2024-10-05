@@ -50,11 +50,22 @@ public class TaskServiceImpl implements TaskService {
     
     @Transactional
     public Task update(Long id, Task entity) {
+        taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
         return taskRepository.save(entity);
     }
     
     @Transactional
     public void delete(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Task deleteByIdAndUserId(Long id, Long userId) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+        if (!task.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Unauthorized access. Verify if the taskId is correct.");
+        }
+        taskRepository.deleteById(id);
+        return task;
     }
 }

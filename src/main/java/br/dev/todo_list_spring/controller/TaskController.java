@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,7 @@ public class TaskController {
 
     @GetMapping("/{userId}")
     @Operation(summary = "Find all tasks",
-               description = "Find all tasks for a given user.",
+               description = "Find all tasks for the logged user.",
                responses = {
                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Tasks found", content = @Content(schema = @Schema(implementation = TaskDTO.class)))
                })
@@ -65,5 +66,27 @@ public class TaskController {
         Long loggedUserId = userService.findByUsername(principal.getName()).getId();
         Task task = taskDTO.toEntity(userService.findById(loggedUserId));
         return ResponseEntity.ok(new TaskDTO(taskService.create(task)));
+    }
+
+    @PutMapping("/{userId}/{taskId}")
+    @Operation(summary = "Update a task",
+               description = "Update a task for the logged user.",
+               requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = TaskDTO.class))),
+               responses = {
+                   @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Task updated", content = @Content(schema = @Schema(implementation = TaskDTO.class)))
+               })
+    public ResponseEntity<TaskDTO> updateTask(Principal principal, @PathVariable Long taskId, @RequestBody TaskDTO taskDTO) {
+        Long loggedUserId = userService.findByUsername(principal.getName()).getId();
+        Task task = taskDTO.toEntity(userService.findById(loggedUserId));
+        return ResponseEntity.ok(new TaskDTO(taskService.update(task.getId(), task)));
+    }
+
+    @DeleteMapping("/{userId}/{taskId}")
+    @Operation(summary = "Delete a task",
+               description = "Delete a task for the logged user.")
+    public ResponseEntity<Void> deleteTask(Principal principal, @PathVariable Long taskId) {
+        Long loggedUserId = userService.findByUsername(principal.getName()).getId();
+        taskService.deleteByIdAndUserId(taskId, loggedUserId);
+        return ResponseEntity.ok().build();
     }
 }
