@@ -1,0 +1,1 @@
+web: java -jar build\libs\todo-list-spring-0.0.1-SNAPSHOT.jar
