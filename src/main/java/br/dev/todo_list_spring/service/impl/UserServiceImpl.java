@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService, UserDetailsService  {
 
     @Transactional
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
+        return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
     }
 
     @Transactional
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService, UserDetailsService  {
 
     @Transactional
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Transactional
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService, UserDetailsService  {
 
     @Transactional
     public User update(Long id, User newUser) {
-        User userRepo = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
+        User userRepo = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         userRepo.setUsername(newUser.getUsername());
         userRepo.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userRepo.setRole(newUser.getRole());
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService, UserDetailsService  {
     @Transactional
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
-            .orElseThrow(() -> new UserNotFoundException());
+            .orElseThrow(() -> new UserNotFoundException(username));
 
         return org.springframework.security.core.userdetails.User.builder()
             .username(user.getUsername())

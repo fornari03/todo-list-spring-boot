@@ -1,11 +1,11 @@
 package br.dev.todo_list_spring.handler;
 
-public class UserAlreadyExistsException extends NotFoundException {
+public class UserAlreadyExistsException extends RuntimeException {
     public UserAlreadyExistsException(Long id) {
-        super(id, "User");
+        super("User with id '" + id + "' already exists");
     }
 
     public UserAlreadyExistsException(String username) {
-        super(username, "User");
+        super("User with username '" + username + "' already exists");
     }
 }
