@@ -58,8 +58,11 @@ public class UserServiceImpl implements UserService, UserDetailsService  {
 
     @Transactional
     public User update(Long id, User newUser) {
-        userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
-        return userRepository.save(newUser);
+        User userRepo = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
+        userRepo.setUsername(newUser.getUsername());
+        userRepo.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        userRepo.setRole(newUser.getRole());
+        return userRepository.save(userRepo);
     }
 
     @Transactional
