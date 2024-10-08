@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import br.dev.todo_list_spring.dto.TaskDTO;
+import br.dev.todo_list_spring.dto.TaskRegisterDTO;
 import br.dev.todo_list_spring.model.Task;
 import br.dev.todo_list_spring.service.TaskService;
 import br.dev.todo_list_spring.service.UserService;
@@ -50,11 +51,11 @@ public class TaskController {
     @PostMapping("/{userId}")
     @Operation(summary = "Create a new task",
                description = "Create a new task for the logged user.",
-               requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = TaskDTO.class))),
+               requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = TaskRegisterDTO.class))),
                responses = {
-                   @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Task created", content = @Content(schema = @Schema(implementation = TaskDTO.class)))
+                   @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Task created", content = @Content(schema = @Schema(implementation = TaskRegisterDTO.class)))
                })
-    public ResponseEntity<TaskDTO> createTask(Principal principal, @RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<TaskDTO> createTask(Principal principal, @RequestBody TaskRegisterDTO taskDTO) {
         Long loggedUserId = userService.findByUsername(principal.getName()).getId();
         Task task = taskDTO.toEntity(userService.findById(loggedUserId));
         return ResponseEntity.ok(new TaskDTO(taskService.create(task)));
