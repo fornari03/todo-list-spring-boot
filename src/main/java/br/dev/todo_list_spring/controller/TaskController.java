@@ -70,7 +70,7 @@ public class TaskController {
     public ResponseEntity<TaskDTO> updateTask(Principal principal, @PathVariable Long taskId, @RequestBody TaskDTO taskDTO) {
         Long loggedUserId = userService.findByUsername(principal.getName()).getId();
         Task task = taskDTO.toEntity(userService.findById(loggedUserId));
-        return ResponseEntity.ok(new TaskDTO(taskService.update(task.getId(), task)));
+        return ResponseEntity.ok(new TaskDTO(taskService.update(taskId, task)));
     }
 
     @DeleteMapping("/{userId}/{taskId}")

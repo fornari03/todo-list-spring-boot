@@ -50,7 +50,12 @@ public class TaskServiceImpl implements TaskService {
     
     @Transactional
     public Task update(Long id, Task entity) {
-        taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+        Task taskRepo = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+        entity.setId(taskRepo.getId());
+        entity.setDescription(taskRepo.getDescription());
+        entity.setUser(taskRepo.getUser());
+        entity.setDateLimit(taskRepo.getDateLimit());
+        entity.setDone(taskRepo.isDone());
         return taskRepository.save(entity);
     }
     
