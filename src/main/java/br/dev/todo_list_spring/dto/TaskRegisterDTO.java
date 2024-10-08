@@ -28,6 +28,7 @@ public record TaskRegisterDTO(
         } catch (IllegalDateLimitFormat e) {
             throw new IllegalDateLimitFormat();
         }
+        task.setUser(user);
         return task;
     }
 }
