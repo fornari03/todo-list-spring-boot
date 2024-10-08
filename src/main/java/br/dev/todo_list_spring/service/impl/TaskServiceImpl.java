@@ -1,15 +1,10 @@
 package br.dev.todo_list_spring.service.impl;
 
-import java.lang.StackWalker.Option;
-import java.security.Principal;
 import java.util.List;
-import java.util.function.Supplier;
 
-import br.dev.todo_list_spring.dto.TaskDTO;
 import br.dev.todo_list_spring.handler.IllegalDateLimitFormat;
 import br.dev.todo_list_spring.handler.TaskNotFoundException;
 import br.dev.todo_list_spring.model.Task;
-import br.dev.todo_list_spring.model.User;
 import br.dev.todo_list_spring.repository.TaskRepository;
 import br.dev.todo_list_spring.repository.UserRepository;
 import br.dev.todo_list_spring.service.TaskService;

@@ -17,7 +17,6 @@ import br.dev.todo_list_spring.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import br.dev.todo_list_spring.dto.UserDTO;
 import br.dev.todo_list_spring.dto.UserRegisterDTO;
-import br.dev.todo_list_spring.model.User;
 
 @RestController
 @RequestMapping("/users")

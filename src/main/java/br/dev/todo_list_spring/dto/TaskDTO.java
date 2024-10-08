@@ -2,7 +2,6 @@ package br.dev.todo_list_spring.dto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import br.dev.todo_list_spring.handler.IllegalDateLimitFormat;
 import br.dev.todo_list_spring.model.Task;

@@ -2,7 +2,6 @@ package br.dev.todo_list_spring.service.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import br.dev.todo_list_spring.handler.UserAlreadyExistsException;
 import br.dev.todo_list_spring.handler.UserNotFoundException;
@@ -12,7 +11,6 @@ import br.dev.todo_list_spring.service.UserService;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
