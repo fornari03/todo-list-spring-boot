@@ -24,7 +24,6 @@ public record TaskDTO(
 
     public Task toEntity(User user) {
         Task task = new Task();
-        task.setId(this.id());
         task.setDescription(this.description());
         try {
             LocalDateTime dateLimit = LocalDateTime.parse(this.dateLimit(), DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy"));
