@@ -13,11 +13,11 @@ Welcome to the **ToDo List Application**! This is a web-based application built 
 
 ## 📸 Screenshots
 
-![Showcase of user-controller and task-controller](image.png)
+![Showcase of user-controller and task-controller](imagesReadme/image.png)
 
-![Showcase of GET method for all Tasks by the logged user](image-1.png)
+![Showcase of GET method for all Tasks by the logged user](imagesReadme/image-1.png)
 
-![Showcase of POST method for a User](image-2.png)
+![Showcase of POST method for a User](imagesReadme/image-2.png)
 
 ## 🛠 Installation
 
