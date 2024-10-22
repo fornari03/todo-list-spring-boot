@@ -63,11 +63,15 @@ Ensure you have the following installed:
 
 - This user can create other users, as well as manage tasks. Explore the functionality by adding tasks and updating and deleting them.
 
+- Use the `appication-dev.yml` resource if using this branch.
+
 ### Production Environment (Branch: `main`)
 
 - In the `main` branch, the project is set up to connect to a **PostgreSQL** database hosted on **Railway**. However, due to an issue with the Railway container (dies immediately after starting), the deployment is currently not working, though the database connection itself works. Feel free to check the logs for debugging purposes.
 
     ### [Link to the Railway Project](https://railway.app/project/44c03f4d-4460-460c-b54b-5996741b7104/service/8c45850e-f95f-4817-b047-26d0ba9fa9ef)
+
+- Use the `appication-prod.yml` resource if using this branch.
 
 ## 💡 Branches Overview
 
